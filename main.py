@@ -11,5 +11,9 @@ create_tables(engine)
 
 Session = sessionmaker(bind=engine)
 session = Session()
+pub = input('Введите идентификатор издателя')
+
+q = session.query(Publisher).filter(Publisher.name == pub)
+print(q)
 
 session.close()

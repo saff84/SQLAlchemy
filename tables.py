@@ -1,7 +1,6 @@
-import sqlalchemy
 import sqlalchemy as sq
-from sqlalchemy.orm import declarative_base, relationship, sessionmaker
-import psycopg2
+from sqlalchemy.orm import declarative_base, relationship
+
 
 Base = declarative_base()
 
@@ -21,7 +20,7 @@ class Book(Base):
     title = sq.Column(sq.String(length=40), nullable=False)
     id_publisher = sq.Column(sq.Integer, sq.ForeignKey("publisher.id"), nullable=False, )
 
-    publisher = relationship(Publisher, backref="book")
+    publisher = relationship(Publisher, backref="publisher")
 
 class Shop(Base):
     __tablename__ = "shop"
@@ -37,8 +36,8 @@ class Stock(Base):
     id_book = sq.Column(sq.Integer, sq.ForeignKey("book.id"), nullable=False, )
     id_shop = sq.Column(sq.Integer, sq.ForeignKey("shop.id"), nullable=False, )
 
-    book = relationship(Book, backref="stock")
-    shop = relationship(Shop, backref="stock")
+    book = relationship(Book, backref="book")
+    shop = relationship(Shop, backref="shop")
 
 
 
@@ -51,8 +50,8 @@ class Sale(Base):
     id_stock = sq.Column(sq.Integer, sq.ForeignKey("stock.id"), nullable=False)
     count = sq.Column(sq.Integer, nullable=False)
 
-    stock = relationship(Stock, backref="sale")
+    stock = relationship(Stock, backref="stock")
 
 def create_tables(engine):
-    # Base.metadata.drop_all(engine)
+    Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
